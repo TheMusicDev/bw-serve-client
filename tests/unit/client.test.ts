@@ -137,5 +137,21 @@ describe('errors', () => {
         const err = await client.status().catch((e) => e);
         expect(err).toBeInstanceOf(BwConnectionError);
         expect(err.cause).toBe(cause);
+        expect(err.timedOut).toBe(false);
+        expect(err.message).toContain('Is it running?');
+    });
+
+    test('timeout -> BwConnectionError that says so, not "is it running"', async () => {
+        const client = new BwServeClient({
+            timeoutMs: 5,
+            fetch: (_url, init) =>
+                new Promise((_resolve, reject) => {
+                    init?.signal?.addEventListener('abort', () => reject(init.signal?.reason));
+                }),
+        });
+        const err = await client.status().catch((e) => e);
+        expect(err).toBeInstanceOf(BwConnectionError);
+        expect(err.timedOut).toBe(true);
+        expect(err.message).toContain('did not answer within 5ms');
     });
 });
