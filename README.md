@@ -76,7 +76,7 @@ Not yet supported: Bitwarden Send. Open an issue if you need it.
 
 `editItem` replaces the whole item on the server side: fetch it with `getItem`, change it, and send it back.
 
-Routes mirror [`oss-serve-configurator.ts`](https://github.com/bitwarden/clients/blob/main/apps/cli/src/oss-serve-configurator.ts) in the Bitwarden CLI source.
+Checked against a live `bw serve` (Bitwarden CLI 2026.10.0) by the read-only integration tests. Routes mirror [`oss-serve-configurator.ts`](https://github.com/bitwarden/clients/blob/main/apps/cli/src/oss-serve-configurator.ts) in the Bitwarden CLI source.
 
 ## Security notes
 
