@@ -1,0 +1,66 @@
+{
+    "name": "@themusicdev/bw-serve-client",
+    "version": "0.0.0",
+    "description": "Unofficial typed fetch client for the Bitwarden Vault Management API (bw serve)",
+    "license": "MIT",
+    "author": "Angel S. Moreno",
+    "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TheMusicDev/bw-serve-client.git"
+    },
+    "homepage": "https://github.com/TheMusicDev/bw-serve-client#readme",
+    "bugs": {
+        "url": "https://github.com/TheMusicDev/bw-serve-client/issues"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "sideEffects": false,
+    "publishConfig": {
+        "access": "public"
+    },
+    "keywords": [
+        "bitwarden",
+        "bw",
+        "bw-serve",
+        "vault-management-api",
+        "password-manager",
+        "fetch",
+        "client",
+        "typescript"
+    ],
+    "scripts": {
+        "prepare": "lefthook install",
+        "prepack": "bun run build",
+        "build": "tsdown",
+        "check:types": "tsc --noEmit",
+        "check:package": "publint && attw --pack . --profile esm-only",
+        "lint": "biome check .",
+        "lint:fix": "biome check --write .",
+        "test": "bun test tests/unit",
+        "test:integration": "bun test tests/integration"
+    },
+    "devDependencies": {
+        "@arethetypeswrong/cli": "^0.18.5",
+        "@biomejs/biome": "^2.5.15",
+        "@commitlint/cli": "^21.2.3",
+        "@commitlint/config-conventional": "^21.2.3",
+        "@types/bun": "^1.4.3",
+        "lefthook": "^2.2.2",
+        "publint": "^0.3.25",
+        "tsdown": "^0.23.1",
+        "typescript": "^7.0.2"
+    }
+}
