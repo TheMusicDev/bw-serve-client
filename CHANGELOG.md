@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/TheMusicDev/bw-serve-client/compare/v0.1.0...v0.1.1) (2026-10-16)
+
+
+### Bug Fixes
+
+* **client:** report request timeouts as timeouts ([#4](https://github.com/TheMusicDev/bw-serve-client/issues/4)) ([f3ab0dd](https://github.com/TheMusicDev/bw-serve-client/commit/f3ab0dd47d2962702ea52f9bdcbccb214755127c))
+
 ## 0.1.0 (2026-10-16)
 
 
