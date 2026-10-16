@@ -92,7 +92,7 @@ export class BwServeClient {
         try {
             res = await this.#fetch(`${this.#baseUrl}${path}${toQueryString(query)}`, init);
         } catch (error) {
-            throw new BwConnectionError(this.#baseUrl, error);
+            throw new BwConnectionError(this.#baseUrl, error, this.#timeoutMs);
         }
         if (res.ok) return res;
         // bw answers failures with 400 + {success:false,message}
