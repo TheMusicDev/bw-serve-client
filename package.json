@@ -1,6 +1,6 @@
 {
     "name": "@themusicdev/bw-serve-client",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "description": "Unofficial typed fetch client for the Bitwarden Vault Management API (bw serve)",
     "license": "MIT",
     "author": "Angel S. Moreno",
