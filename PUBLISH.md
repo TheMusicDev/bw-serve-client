@@ -19,21 +19,26 @@ The tarball contains only `dist/`, `LICENSE`, `README.md`, `package.json` (`file
 - Environments -> create **`release`** (optionally add required reviewers / restrict to `main`).
 - Optional: add a PAT as secret `RELEASE_PLEASE_TOKEN` (needs `contents` + `pull-requests` write). PRs created with the default `GITHUB_TOKEN` do not trigger CI, so without it the release PR shows no checks.
 
-**First publish is manual.** npm can't configure a Trusted Publisher until the package exists:
+**First publish is manual.** npm can only attach a Trusted Publisher to a package that already exists (this applies to the website and to `npm trust` alike), so version `0.1.0` goes out by hand once. Every release after that is OIDC-only.
 
 1. Merge the first release PR (`0.1.0`). The `publish` job will fail on this first run: expected, no trusted publisher yet.
-2. Publish by hand from the tag:
+2. Publish by hand from the tag (needs 2FA on your npm account and write access to the `@themusicdev` org):
    ```sh
    git fetch --tags && git checkout v0.1.0
    bun install --frozen-lockfile && bun run build
-   npm publish --access public      # npm login first; needs write access to the @themusicdev org
+   npm login
+   npm publish --access public
    ```
-3. On npmjs.com -> package -> Settings -> **Trusted Publisher** -> GitHub Actions:
-   - Organization/user: `TheMusicDev`
-   - Repository: `bw-serve-client`
-   - Workflow filename: `release.yml`
-   - Environment: `release`
-4. From `0.1.1` on, merging the release PR publishes automatically.
+3. Register the Trusted Publisher. Use the CLI (needs npm >= 11.15, interactive 2FA) or the npmjs.com UI (package -> Settings -> Trusted Publisher -> GitHub Actions):
+   ```sh
+   npx -y npm@latest trust github @themusicdev/bw-serve-client \
+     --repo TheMusicDev/bw-serve-client --file release.yml --env release --allow-publish
+   ```
+   The values must match exactly (case-sensitive): repo `TheMusicDev/bw-serve-client`, workflow file `release.yml`, environment `release`. npm does not validate them when you save; mistakes only show up at publish time. `package.json` `repository.url` must also match the GitHub repo.
+4. **Within 2 days**, ship a second release (`0.1.1`): merge any `fix:`/`feat:` PR, then merge the release PR. npm expires a Trusted Publisher config whose first OIDC publish doesn't succeed within 2 days; if that happens, `npm trust revoke` it and create it again.
+5. Lock it down: package -> Settings -> Publishing access -> **Require two-factor authentication and disallow tokens**. OIDC publishes keep working.
+
+Stricter option: register with `--allow-stage-publish` instead of `--allow-publish` and change the last step of the `publish` job to `npm stage publish`. CI then only stages the package, and you approve each release with 2FA (`npm stage approve`).
 
 ## Troubleshooting
 
